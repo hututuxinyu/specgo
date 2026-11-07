@@ -57,8 +57,7 @@
 | 模板文件 | 来源 Skill | 原文件路径 | 用途 |
 | --- | --- | --- | --- |
 | spec/story设计README模板.md | spec-story-design | skills/spec-story-design/references/story-readme-template.md | story 索引 README |
-| spec/story设计详情模板.md | 同上 | skills/spec-story-design/references/story-template.md | {功能名}-story.md 七类核心要素骨架 |
-| spec/develop-task模板.md | 同上 | skills/spec-story-design/references/develop-task-template.md | {功能名}-develop-task.md 修改清单 + 澄清清单 |
+| spec/story设计详情模板.md | 同上 | skills/spec-story-design/references/story-template.md | {功能名}-story.md 模块设计骨架 |
 | spec/功能设计规范模板.md | spec-function-design-audit | skills/spec-function-design-audit/references/functional-design-template.md | 功能设计规范 md（场景 1 审核后可选输出） |
 | spec/建模结果HTML模板.html | 同上 | skills/spec-function-design-audit/assets/model-template.html | 多彩建模结果 HTML |
 | spec/全链路分析报告模板.md | specgo | specgo/SKILL.md 第 6 步（内联三节结构） | {YYYYMMDD}-report.md 全链路报告骨架 |

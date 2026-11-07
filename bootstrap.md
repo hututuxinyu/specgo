@@ -40,37 +40,43 @@ spec skill 的 description 已包含触发关键词，请用下面的索引判�
 全量资产分析编排 skill——以子代理并行派发 14 个资产分析 skill（arch 结构/交互 2 个 + biz 接口/对象模型/数据模型 3 个 + tech 框架/通信/并发/数据访问/韧性/基础 6 个 + qual 编码/DT/分支 3 个），一次性完成代码仓 docs/ 资产建库。每个子代理按其 skill 的「交付前自检」判定落盘位置：自检不过的整篇写入 docs/_review/，通过的直接落正式目录。主代理只做编排、用户确认与验收，不亲自分析。当需要为代码仓首次建齐 docs/ 资产、或资产长期失修需要全量重建时使用。触发场景包括"spec-analyze"、"全量资产分析"、"一次性分析代码仓"、"一键资产分析"、"资产全量录入"、"全仓资产盘点"、"把所有分析 skill 跑一遍"、"建齐 docs 资产"等。
 
 ### 11. spec-code-generate
-代码生成执行 skill——依据 story 设计文档与 develop-task 修改文件清单在被分析仓落地完整可运行代码。两条铁律：①代码必须完整交付，禁止任何 TODO/占位符/省略号式留空，每个函数、每个分支、每条错误处理路径都必须写出真实实现，写不出完整实现就是输入不足——返回待确认清单，绝不用 TODO 占位；②子代理只实现代码、按修改文件清单可并行多个子代理（按文件分组派发，无依赖的文件组同一条消息并行），主代理执行测试（单测/集成测试/验证命令）与后续流程，绝不亲自编码。子代理执行纪律：只读三波输入文档（story 全读 + develop-task + 两文档显式引用的仓内文档）、定点核实存量代码、按修改文件清单逐文件落地（清单外不改）。主代理测试纪律：单元测试覆盖新增/改动逻辑全部通过、仓内有集成/E2E 测试必须主动运行、develop-task「验证方式」命令实跑通过才算完成。通常由 specgo 第 4 步调度，也可在已有 story/develop-task 时单独触发。触发场景包括"spec-code-generate"、"按 story 生成代码"、"实现这个 develop-task"、"代码实现"、"生成完整代码"等。
+代码生成执行 skill——依据 story 设计文档与功能点修改清单在被分析仓落地完整可运行代码。两条铁律：①代码必须完整交付，禁止任何 TODO/占位符/省略号式留空，每个函数、每个分支、每条错误处理路径都必须写出真实实现，写不出完整实现就是输入不足——返回待确认清单，绝不用 TODO 占位；②子代理只实现代码、按修改文件清单可并行多个子代理（按文件分组派发，无依赖的文件组同一条消息并行），主代理执行测试（单测/集成测试/验证命令）与后续流程，绝不亲自编码。子代理执行纪律：只读三波输入文档（story 全读 + story 中显式引用的仓内文档）、定点核实存量代码、按功能点修改清单逐文件落地（清单外不改）。主代理测试纪律：单元测试覆盖新增/改动逻辑全部通过、仓内有集成/E2E 测试必须主动运行、story 验证命令实跑通过才算完成。通常由 specgo 第 4 步调度，也可在已有 story 时单独触发。触发场景包括"spec-code-generate"、"按 story 生成代码"、"代码实现"、"生成完整代码"等。
 
 ### 12. spec-function-design-audit
 需求/功能设计审核 skill——基于多彩建模方法论审核 Spec/需求/功能设计文档的完备性（表述质量扫描：句子成分残缺/弱表述/术语失范/语义多解 + 业务逻辑断裂点 + 设计要素：时序图/验收用例/接口信息 + 通用知识与公开协议错误校验），四类问题一次扫描、统一 ask-human 批量澄清补齐，建模结果以 HTML 可视化呈现，审核完成后可选输出规范功能设计 md。当用户提到"spec-function-design-audit"、"审核 spec 业务逻辑完备性"、"多彩建模"、"检查需求逻辑断点"、"需求表述质量检查"、"需求歧义扫描"、"建模结果生成 HTML 并找人确认"、"功能设计文档校验"、"需求审核"时使用。
 
-### 13. spec-story-design
-当接收到需求设计文档（SR/特性设计），需要为存量代码仓产出新功能的 story 设计文档时使用——产出 `docs/1-storys/{功能名}/` 目录（每 story 一个目录：`{功能名}-story.md` + `{功能名}-develop-task.md`，后续全链路分析报告也归档同目录）：story 按七类核心要素（对外接口/业务规则/数据模型/对象模型/交互流程/外部服务调用/技术要素）组织章节，每类要素明确标注 新增 / 变更（写清对哪个既有要素做了什么更改）/ 不涉及，并附需求概述（多彩建模）、实现方案与修改清单、外部文档引用；同需求重跑同名覆盖。触发场景包括"新增 story 设计"、"根据需求文档生成 story 设计"、"xxx-story 文档"、"docs/1-storys"、"按 story 模板输出新功能设计"等。
+### 13. spec-humanize
+story.md 人话改稿 skill——在 spec-story-design 产出 story.md 后、spec-point-verify 判读前执行。改写正文散文段落去 AI 味（写人话/禁翻案腔/禁冒号提示句/禁破折号/禁模型路标/禁商业黑话/长句带主语/阿拉伯数字/技术术语配人话），跑 check_prose.py 确定性门禁兜底（failures 必清零）。只改正文段落，不动表格/mermaid/代码路径/推导表判定列。可独立触发"去AI化""人话改稿""story改稿"等。
 
-### 14. spec-update
+### 14. spec-point-verfy
+功能点推导链判读 skill——在 story.md 推导表产出后（判定列「待判读」）、代码实现前，逐功能点独立判读推导链是否成立、资产引用是否真实且支撑、业务意图是否覆盖、实现场景必参考文档是否齐全，并做一次跨功能点整体走查（执行顺序自洽、校验先后合理、错误语义一致、编码必需信息齐备）。结论以三档判定（通过/需修订/打回设计）加人话理由回填同一份 story.md 推导表原位置，修订后原位置覆盖不另起偏差章节，判读闭环循环直至全部通过才放行。不打分、不另起文档。通常由 specgo 第 3.6 步调度，也可在已有 story.md 时单独触发。触发场景包括"spec-point-verify"、"功能点判读"、"逐功能点验证"、"推导链判读"、"point verify"等。
+
+### 15. spec-story-design
+当接收到需求设计文档（SR/特性设计），需要为存量代码仓产出新功能的 story 设计文档时使用——产出 `docs/1-storys/{功能名}/{功能名}-story.md` 单一文档（合并功能澄清 + 代码实现指引，不再产出独立 develop-task.md；代码与 story 推导表的对照差异归 specgo 第 6 步全链路分析报告承载，不回填 story.md）：story 按模块组织章节（§1 澄清决策 → §2 需求概述映射到模块角度 → §3 模块设计按 controllers/service/dao/models 拆节，每模块四小节：接口/数据模型对象模型/交互模型/功能点修改清单 → §4 关键测试用例 → §5 外部文档引用 → §6 需关注事项与资产缺口），复用模块给复核项表、变更模块才给推导表四件套，并附需求概述（模块间交互时序图）、功能澄清决策、功能清单（按模块维度）、外部文档引用；同需求重跑同名覆盖。触发场景包括"新增 story 设计"、"根据需求文档生成 story 设计"、"xxx-story 文档"、"docs/1-storys"、"按 story 模板输出新功能设计"等。
+
+### 16. spec-update
 基于 git 变更（工作区未提交改动 / 指定 commit / 分支或 MR diff）识别代码原始内容变化，结合新增代码审视 docs/ 资产体系中对应文档是否需要刷新，并按最新要素定义（arch/biz/tech/qual 各 analyze skill 的目录布局、文件命名、模板骨架、组织规则）增量刷新受影响文档——变更文件映射到资产要素、逐资产判定影响（受影响 / 不受影响 / 资产未建），刷新清单先交人工确认再动笔定稿。当代码提交或 MR 合入后需要评估"这次变更要更新哪些 docs 文档""资产是否过期""按最新定义同步文档"时使用。触发场景包括"spec-update"、"资产刷新"、"刷新 docs"、"代码改了哪些文档要更新"、"变更影响分析"、"文档同步"、"docs 与代码不同步"、"MR 后刷新文档"、"git diff 刷新资产"等。
 
-### 15. tech-basic-mechanism-guidelines-analyze
+### 17. tech-basic-mechanism-guidelines-analyze
 提取存量代码仓的基础规范资产（日志/配置/告警等横切编码机制的使用指导），单模式提取运行——盘点仓内基础编码机制，产出 README 索引 + 每维度一篇 basic-mechanism-guidelines-{dimension}.md；每篇文档只含两项内容：基础机制的函数调用说明（可调用的函数/方法清单：签名、作用、参数、来源文件）与使用代码案例（真实代码片段，注明来源文件路径）。产出落盘被分析仓的 docs/0-tech/basic-mechanism-guidelines/。当用户提到"基础规范"、"日志规范"、"日志怎么用"、"配置规范"、"配置读取方式"、"环境变量"、"告警规范"、"告警 ID"、"告警怎么上报"、"编码指导"、"foundation guidelines"时使用。
 
-### 16. tech-concurrency-guidelines-analyze
+### 18. tech-concurrency-guidelines-analyze
 提取存量代码仓的并发规范资产（线程池、锁、channel、goroutine 启动点、Actor、定时任务并发等并发原语实例），单模式提取运行——盘点仓内并发原语并按实例归集成文，产出 README.md 实例导航主文档 + 每实例一篇 concurrency-guidelines-{pool}.md；每篇文档章节不超过三个（用途定位 + 使用说明 + 代码案例），人一看就懂：用途定位一段话说清该实例干什么、为什么需要并发；使用说明列可调用的封装函数/原语入口清单（作用、参数或取值、定义文件）；代码案例给真实调用片段（注明来源文件路径）。产出落盘被分析仓的 docs/0-tech/concurrency-guidelines/（活文档，同名覆盖更新）。当用户提到"并发规范"、"线程池"、"池隔离"、"并发原语盘点"、"goroutine 启动点"、"锁使用"、"channel"、"Actor"、"定时任务并发"、"concurrency guidelines"、"thread pool"时使用。
 
-### 17. tech-data-access-guidelines-analyze
+### 19. tech-data-access-guidelines-analyze
 治理存量代码仓的数据访问规范资产（数据存储的访问指导），按数据形态分两类治理——内存数据（进程内内存结构 map+锁/sync.Map/自研缓存，及 Redis/Memcached 等内存型存储）与持久化数据（关系库/ORM、本地嵌入式存储、对象存储、文件系统），两类各用一个模板，模板聚焦三件事：数据设计与定位（存什么、为什么放这里、结构/容量/TTL/生命周期）、如何使用这个数据（读写路径、一致性、并发/事务、降级）、应该在什么场景使用这个数据（业务场景与兜底边界）；外围维度含连接与客户端管理、分页与批量、SQL 拼接与注入防护、错误处理。双模式运行——起草模式识别仓内数据存储并分类，逐存储盘点访问方式并起草规范（数据设计与定位 + 使用方式 + 适用场景 + 现状描述与应有约定）；差距分析模式对照既有规范扫描实际访问的合规差距。产出落盘被分析仓的 docs/0-tech/data-access-guidelines/：README.md 导航主文档 + 每存储一篇 data-access-guidelines-{mw}.md；差距报告落盘 docs/0-tech/data-access-guidelines/report/{YYYYMMDD}-data-access-guidelines.md。当用户提到"数据访问规范"、"Redis 使用规范"、"DB 访问指导"、"数据库访问规范"、"内存缓存"、"进程内缓存"、"缓存读写模式"、"缓存穿透"、"SQL 注入防护"、"事务使用盘点"、"ORM 怎么用"、"data access guidelines"、"数据访问差距分析"、"对照数据访问规范检查"时使用。
 
-### 18. tech-external-call-guidelines-analyze
+### 20. tech-external-call-guidelines-analyze
 治理存量代码仓的通信规范资产（RPC/HTTP/MQ 等跨服务调用指导：本服务调用了哪些外部业务节点、协议与封装方式、超时重试与错误码处理），双模式运行——提取模式扫描仓内全部出站调用（HTTP 客户端 / RPC client / IDL client stub / 消息队列生产端 / 进程间通信 / 平台 SDK），按被调外部业务服务归类成文；差距分析模式对照既有通信规范文档核查实际调用的合规差距。边界：只承载业务节点间跨服务调用——DB/Redis/对象存储等数据存储的访问不视为外部服务调用，归 tech-data-access-guidelines-analyze。产出落盘被分析仓的 docs/0-tech/external-call-guidelines/：README 索引 + 每外部服务一篇 external-call-guidelines-{service}.md；差距报告落盘 docs/0-tech/external-call-guidelines/report/{YYYYMMDD}-external-call-guidelines.md。当用户提到"通信规范"、"外部调用"、"下游接口"、"出站调用"、"调用了哪些外部服务"、"服务依赖盘点"、"跨服务调用指导"、"调用规范差距分析"、"对照通信规范检查"、"external call"、"comm guidelines"时使用。
 
-### 19. tech-framework-guidelines-analyze
+### 21. tech-framework-guidelines-analyze
 分析存量代码仓中的内部代码框架（RPC/Web 框架、线程池、Actor、日志、序列化、配置、依赖注入、消息队列、调度、资源池、容错治理、监控、基础库、测试框架等）及其使用方式，提取"框架使用指导"资产（基础框架清单与使用方式盘点，纯现状、无规范文档），落盘被分析仓的 docs/0-tech/framework-guidelines/：索引 README.md + 每框架一篇 framework-guidelines-{framework}.md（含用途定位、使用模式）。边界：只承载内部代码框架使用指导——数据存储访问（DB driver/ORM/Redis/MinIO/嵌入式存储等）归 tech-data-access-guidelines-analyze，跨服务业务节点调用归 tech-external-call-guidelines-analyze，均不纳入本资产。当需要盘点代码仓技术栈、梳理框架使用模式与调用点分布、为 AI 代码生成沉淀"框架使用知识"、或为重构/迁移/新人上手提供框架使用文档时使用。触发场景包括"框架使用指导"、"框架使用现状"、"技术栈盘点"、"框架使用"、"用了哪些框架"、"XX 框架怎么用"、"线程池怎么用"、"RPC 怎么调的"、"framework guidelines"、"framework usage"、"tech stack"等。
 
-### 20. tech-resilience-guidelines-analyze
+### 22. tech-resilience-guidelines-analyze
 提取存量代码仓的韧性规范资产（超时/重试/熔断降级/异常处理等故障策略——只管故障来了怎么扛，不管通信协议本身，协议与封装归通信规范），单模式提取运行——扫描仓内全部出站调用点与后台任务的故障策略，产出 README 索引 + 每维度一篇 resilience-guidelines-{dimension}.md；每篇文档只含两项内容：使用说明（该维度机制在仓内怎么用——可调用的封装函数/配置项清单：作用、参数或取值、来源文件）与代码案例（真实代码片段，注明来源文件路径）。产出落盘被分析仓的 docs/0-tech/resilience-guidelines/（活文档，同名覆盖更新）。当用户提到"韧性规范"、"超时设置"、"重试策略"、"熔断降级"、"故障策略"、"异常处理"、"panic recover"、"错误吞掉"、"吞错"、"错误 swallowing"、"容错"、"稳定性治理"、"resilience"时使用。
 
-### 21. specgo
-规格化全链路主流程编排 skill——资产检查/录入 → 需求审核(spec-function-design-audit) → story 设计(spec-story-design) → 代码实现与测试(spec-code-generate) → 资产刷新(spec-update) → 全链路分析报告（主代理直接产出，归档 docs/1-storys/{功能名}/ story 目录），六步端到端；每步校验环节结束固定过 ask-human 审视门，新生成的文档/代码必须经人审视通过后才进下一步。主代理只做编排与用户确认，各步骤派子代理执行。触发场景包括"specgo"、"端到端开发 xx 功能"、"从需求到交付"、"全流程开发"等。
+### 23. specgo
+规格化全链路主流程编排 skill——资产检查/录入 → 需求审核(spec-function-design-audit) → story 设计(spec-story-design) → 人话改稿(spec-humanize) → 功能点判读(spec-point-verify) → 代码实现与测试(spec-code-generate) → 资产刷新(spec-update) → 全链路分析报告（主代理直接产出，归档 docs/1-storys/{功能名}/ story 目录），六步端到端（第 3 步内含 3.5 人话改稿 + 3.6 功能点判读循环两道子关卡）；第 3~3.6 步自动连续执行不中断，各步校验环节过 ask-human 审视门，新生成的文档/代码必须经人审视通过后才进下一步。主代理只做编排与用户确认，各步骤派子代理执行。触发场景包括"specgo"、"端到端开发 xx 功能"、"从需求到交付"、"全流程开发"等。
 
 ## 推荐工作流（spec 全链路）
 
@@ -99,8 +105,8 @@ spec skill 的 description 已包含触发关键词，请用下面的索引判�
 **需求到交付（旧体系保留链路）**
 
 18. **mermaid 图验证** → mermaid-validate：含图产出物必须本地校验全部 VALID 后交付
-19. **需求到 story 设计** → spec-story-design：产出 docs/1-storys/{功能名}/ 目录（{功能名}-story.md 七类核心要素组织、标注新增/变更/不涉及 + {功能名}-develop-task.md）
-20. **全链路编排（端到端主流程，推荐入口）** → specgo：资产检查/录入 → 需求审核（spec-function-design-audit）→ story 设计 → 代码实现与测试 → 资产刷新（spec-update）→ 全链路分析报告（主代理直接产出，归档 docs/1-storys/{功能名}/ story 目录），每步校验环节结束固定过 ask-human 审视门；主代理编排与用户确认、各步骤派子代理执行
+19. **需求到 story 设计** → spec-story-design：产出 docs/1-storys/{功能名}/{功能名}-story.md 单一文档（合并功能澄清 + 代码实现指引，不再产出独立 develop-task.md）
+20. **全链路编排（端到端主流程，推荐入口）** → specgo：资产检查/录入 → 需求审核（spec-function-design-audit）→ story 设计 → 人话改稿 → 功能点判读 → 代码实现与测试 → 资产刷新（spec-update）→ 全链路分析报告（主代理直接产出，归档 docs/1-storys/{功能名}/ story 目录），第 3~3.6 步自动连续执行，各步校验环节过 ask-human 审视门；主代理编排与用户确认、各步骤派子代理执行
 
 ## 红线（这些想法意味着你正在跳过 skill）
 

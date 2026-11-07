@@ -113,7 +113,7 @@ skill 清单按 HELP.MD「四分类资产模型」taxonomy 组织：四域（arc
 |-------|------|------|
 | spec-update | 基于 git 变更（工作区 diff / commit / MR diff）识别代码变化对 docs/ 资产的影响，按最新要素定义增量刷新受影响文档（刷新清单人工确认后定稿） | 受影响 docs/ 文档就地刷新（同名覆盖） |
 | spec-analyze | 一键全量资产分析编排：子代理并行派发全部 14 个 analyze skill，自检不过的资产落 `docs/_review/`；主代理只编排、确认与验收 | `docs/` 全套 14 类资产 |
-| spec-story-design | 需求文档 → story 设计文档（七类核心要素组织，标注新增/变更/不涉及）；每 story 一个目录 | `docs/1-storys/{功能名}/`：{功能名}-story.md + {功能名}-develop-task.md（抛弃式编码辅助文档） |
+| spec-story-design | 需求文档 → story 设计文档（按模块组织，标注新增/变更/复用）；单一文档合并功能澄清+代码实现指引 | `docs/1-storys/{功能名}/{功能名}-story.md` |
 | spec-function-design-audit | 需求/功能设计审核：多彩建模 + 三类断点扫描（表述质量/逻辑断点/设计要素）+ ask-human 批量澄清 + HTML，可选输出规范功能设计 md | 源文档同目录：`{功能名}-建模结果.html`；可选 `{功能名}-功能设计.md` |
 | specgo | 全链路编排：资产检查/录入 → 需求审核 → story 设计 → 代码实现与测试 → 资产刷新（spec-update）→ 全链路分析报告（主代理直接产出），六步端到端；每步校验环节结束固定过 ask-human 审视门；主代理编排与用户确认，前五步派子代理执行 | 从需求到交付的全部产出物 |
 | spec-code-generate | 代码生成执行：两条铁律（完整代码零 TODO；子代理只实现代码、按文件分组可并行多个，主代理执行测试与后续流程）+ 子代理三步纪律（三波文档 → 定点核实 → 按清单落地）+ 主代理四步测试验收（组装与零 TODO 复核 → 单测 → 集成测试主动跑 → 验证命令实跑），由 specgo 第 4 步调度或单独触发 | 完整可运行的代码 + 测试（落被分析仓） |
@@ -162,7 +162,7 @@ sequenceDiagram
     M->>H: "审视门2：逐条澄清拍板"
     H-->>M: "澄清结论"
     M->>W: "第3步 story 设计（spec-story-design）"
-    W-->>M: "story + develop-task"
+    W-->>M: "story"
     M->>H: "审视门3：设计文档审视"
     H-->>M: "拍板"
     M->>W: "第4步 代码实现（spec-code-generate 按文件分组并行）"
@@ -212,10 +212,10 @@ sequenceDiagram
 
 第 5 步：story 设计
 输入指令：`按这份需求文档做 story 设计：<需求文档路径>`
-（spec-story-design；产出 docs/1-storys/{功能名}/ 下 story + develop-task，develop-task 的疑问澄清逐条给结论）
+（spec-story-design；产出 docs/1-storys/{功能名}/{功能名}-story.md 单一文档，疑问澄清逐条给结论）
 
 第 6 步：编码实现与测试
-输入指令：`按 docs/1-storys/{功能名}/ 的 develop-task 实现代码`
+输入指令：`按 docs/1-storys/{功能名}/{功能名}-story.md 的功能点修改清单实现代码`
 （TDD 实现；完成后运行验证命令取证）
 
 第 7 步：MR 合入后资产刷新

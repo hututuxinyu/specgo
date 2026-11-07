@@ -104,7 +104,7 @@
 docs/0-{域}/{资产}/{资产}-{形态}-{实例}.md           ← 模型/规范文档（活文档，覆盖更新；形态豁免资产无形态段）
 docs/0-{域}/{资产}/README.md                         ← 多文件资产的主文档/索引（必产出，内容口径按各 SKILL.md 约定）
 docs/0-{域}/{资产}/report/{YYYYMMDD}-{资产}-{形态}.md ← 差距报告（次抛，带日期）
-docs/1-storys/{功能名}/                              ← story 目录（story/develop-task/全链路报告）
+docs/1-storys/{功能名}/                              ← story 目录（story/全链路报告）
 ```
 
 规则：
